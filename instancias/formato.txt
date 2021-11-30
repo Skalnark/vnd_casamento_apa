@@ -1,0 +1,11 @@
+#quantidade_convidados
+<Quantidade de Convidados>
+
+#quantidade_mesas
+<Quantidade de mesas>
+
+#limites_minimo_maximo_mesas
+<Lista de limites minimo e maximo para cada mesa. Exemplo: "2 10" implica que a respectiva mesa, caso seja utilizada, deve ter pelo menos 2 convidados e no maximo 10>
+
+#beneficios
+<Lista que indica o beneficio de atribuir determinados pares de pessoas à mesma mesa. Exemplo: "1  2  10", especifica que atribuir os convidados 1 e 2 para a mesma mesa é implica em um beneficio positivo de 10 unidades. No caso de uma linha com "3  5  -8" indicaria que alocar os convidados 3 e 5 para a mesma mesa é prejudicial e contribui com -8 unidades na função objetivo. Note que, caso não exista uma linha nessa lista para um determinado par de convidados, assumimos que sua relação tem valor 0>
