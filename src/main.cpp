@@ -14,7 +14,9 @@ int main(int argc, char *argv[])
         Data data(filepath);
         cout << "Done!" << endl;
 
-        if (argc > 2 && argv[2] == "show")
+        cout << argv[2] << endl;
+
+        if (argc >= 2 && string(argv[2]) == "-p")
             data.Show();
     }
 
