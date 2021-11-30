@@ -3,7 +3,8 @@ CPPC = g++
 #############################
 
 #### opcoes de compilacao e includes
-CCOPT = -O3 -fPIC -fexceptions -DNDEBUG -DIL_STD -std=c++11
+#CCOPT = -O3 -fPIC -fexceptions -DNDEBUG -DIL_STD -std=c++11
+CCOPT = -O3 -fexceptions -Werror -std=c++11
 CONCERTINCDIR = $(CONCERTDIR)/include
 #############################
 
@@ -19,8 +20,8 @@ OBJS = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRCS))
 
 #### regra principal, gera o executavel
 vnd: $(OBJS) 
-	@echo  "\033[31m \nLinking all objects files: \033[0m"
-	$(CPPC) $(OBJS) -o $@
+	@echo  "Linking all objects files: "
+	$(CPPC) $(CCOPT) $(OBJS) -o $@
 ############################
 
 #inclui os arquivos de dependencias
@@ -29,18 +30,22 @@ vnd: $(OBJS)
 #regra para cada arquivo objeto: compila e gera o arquivo de dependencias do arquivo objeto
 #cada arquivo objeto depende do .c e dos headers (informacao dos header esta no arquivo de dependencias gerado pelo compiler)
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	@echo  "\033[31m \nCompiling $<: \033[0m"
+	@echo  "Compiling $<: "
 	$(CPPC) $(CCFLAGS) -c $< -o $@
-	@echo  "\033[32m \ncreating $< dependency file: \033[0m"
+	@echo  "creating $< dependency file: "
 	$(CPPC) -std=c++11  -MM $< > $(basename $@).d
 	@mv -f $(basename $@).d $(basename $@).d.tmp #proximas tres linhas colocam o diretorio no arquivo de dependencias (g++ nao coloca, surprisingly!)
 	@sed -e 's|.*:|$(basename $@).o:|' < $(basename $@).d.tmp > $(basename $@).d
 	@rm -f $(basename $@).d.tmp
 
+#cria o arquivo de assembly gerado
+%.as: %.c ${SRCDIR}
+	${CPPC} ${CCOPT} -S -o $@ $<
+
 #delete objetos e arquivos de dependencia
-clean:
-	@echo "\033[31mcleaning obj directory \033[0m"
-	@rm vnd -f $(OBJDIR)/*.o $(OBJDIR)/*.d
+clear:
+	@echo "cleaning obj directory "
+	@rm vnd -f $(OBJDIR)/*.o $(OBJDIR)/*.d $(OBJDIR)/*.asm
 
 
 rebuild: clean vnd
