@@ -3,16 +3,10 @@
 
 #include <vector>
 #include <string>
-
-struct Table
-{
-    int minGuests;
-    int maxGuests;
-};
+#include "table.hpp"
 
 class Data
 {
-
     private:
         std::vector<std::vector<double>> adj_matrix;
         int nGuests;

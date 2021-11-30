@@ -1,4 +1,5 @@
 #include "data.hpp"
+#include "table.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -37,8 +38,14 @@ Data::Data(std::string filepath)
 
             for (int i = 0; i < nTables; ++i)
             {
-                file >> tables[i].minGuests;
-                file >> tables[i].maxGuests;
+                int min, max;
+
+                file >> min;
+                file >> max;
+
+                Table table(min, max);
+
+                tables[i] = table;
             }
         }
 
@@ -65,6 +72,8 @@ Data::Data(std::string filepath)
             }
         }
     }
+
+    file.close();
 }
 
 void Data::Show()
