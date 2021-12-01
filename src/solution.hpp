@@ -6,9 +6,12 @@
 
 class Solution
 {
+private:
+    std::vector<Table> tables;
+
 public:
-    Solution(std::vector<std::vector<double>> adj_matrix, std::vector<Table> tables);
-    double Value();
+    Solution(Data data);
+    double Value(const std::vector<std::vector<double>> &adj_matrix);
 };
 
 #endif

@@ -23,10 +23,10 @@ bool Table::AddGuest(int guest)
 
 bool Table::IsValid()
 {
-    return guests.size() >= minGuests;
+    return guests.size() >= minGuests && guests.size() <= maxGuests;
 }
 
-double Table::Evaluate(std::vector<std::vector<double>> adj_matrix)
+double Table::Evaluate(const std::vector<std::vector<double>> &adj_matrix)
 {
     double total = 0;
 
@@ -42,4 +42,14 @@ double Table::Evaluate(std::vector<std::vector<double>> adj_matrix)
     }
 
     return total;
+}
+
+void Table::Show(int index)
+{
+    std::cout << "Table " << index << ": ";
+    for(int i = 0 ; i < guests.size() ; ++i)
+    {
+        std::cout << guests[i] << " ";
+    }
+    std::cout << std::endl;
 }

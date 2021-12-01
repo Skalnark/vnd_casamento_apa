@@ -9,6 +9,7 @@ Data::Data(std::string filepath)
     std::fstream file(filepath, std::ios_base::in);
     bool tables_found = false;
     bool guests_found = false;
+    Seats = 0;
 
     if (!file)
     {
@@ -42,6 +43,8 @@ Data::Data(std::string filepath)
 
                 file >> min;
                 file >> max;
+
+                Seats += max;
 
                 Table table(min, max);
 

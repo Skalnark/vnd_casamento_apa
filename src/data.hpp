@@ -7,15 +7,14 @@
 
 class Data
 {
-    private:
-        std::vector<std::vector<double>> adj_matrix;
-        int nGuests;
-        int nTables;
-        std::vector<Table> tables;
-
     public:
+        int nTables;
+        int nGuests;
         Data(std::string filepath);
         void Show();
+        std::vector<Table> tables;
+        std::vector<std::vector<double>> adj_matrix;
+        int Seats;
 };
 
 #endif

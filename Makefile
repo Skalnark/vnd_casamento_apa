@@ -4,7 +4,7 @@ CPPC = g++
 
 #### opcoes de compilacao e includes
 #CCOPT = -O3 -fPIC -fexceptions -DNDEBUG -DIL_STD -std=c++11
-CCOPT = -O3 -fexceptions -Werror -std=c++11
+CCOPT = -O3 -fexceptions -std=c++11
 CONCERTINCDIR = $(CONCERTDIR)/include
 #############################
 

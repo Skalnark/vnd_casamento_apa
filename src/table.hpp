@@ -11,9 +11,11 @@ public:
     int maxGuests;
     std::vector<int> guests;
     bool AddGuest(int guest);
-    double Evaluate(std::vector<std::vector<double>> adj_matrix);
+    double Evaluate(const std::vector<std::vector<double>> &adj_matrix);
     std::vector<std::vector<double>> adj_matrix;
     bool IsValid();
+    int SeatQuantity();
+    void Show(int index);
 };
 
 #endif
