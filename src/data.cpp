@@ -7,13 +7,13 @@
 Data::Data(std::string filepath)
 {
     std::fstream file(filepath, std::ios_base::in);
-    bool tables_found = false;
-    bool guests_found = false;
+    bool tables_parsed = false;
+    bool benefits_parsed = false;
     Seats = 0;
 
     if (!file)
     {
-        std::cout << "Error: File not found!" << std::endl;
+        std::cout << "Error: File not parsed!" << std::endl;
         exit(-1);
     }
 
@@ -28,14 +28,14 @@ Data::Data(std::string filepath)
     std::cout << "nGuests: " << nGuests << " "
               << "nTables: " << nTables << std::endl;
 
-    while (!(tables_found && guests_found))
+    while (!(tables_parsed && benefits_parsed))
     {
         file >> line;
 
         if (line == "#limites_minimo_maximo_mesas")
         {
             tables = std::vector<Table>(nTables);
-            tables_found = true;
+            tables_parsed = true;
 
             for (int i = 0; i < nTables; ++i)
             {
@@ -55,7 +55,7 @@ Data::Data(std::string filepath)
         if (line == "#beneficios")
         {
             adj_matrix = std::vector<std::vector<double>>(nGuests);
-            guests_found = true;
+            benefits_parsed = true;
 
             for (int i = 0; i < nGuests; ++i)
             {
