@@ -3,7 +3,8 @@
 
 #include <vector>
 
-class Table {
+class Table
+{
 public:
     Table();
     Table(int minGuests, int maxGuests);

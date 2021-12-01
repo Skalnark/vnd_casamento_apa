@@ -89,5 +89,4 @@ void Data::Show()
         }
         std::cout << std::endl;
     }
-    std::cout << adj_matrix[47][49] << std::endl;
 }

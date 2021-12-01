@@ -12,6 +12,10 @@ private:
 public:
     Solution(Data data);
     double Value(const std::vector<std::vector<double>> &adj_matrix);
+    void Randomize();
+    void Disturb(int n);
+    void TwoOpt();
+    void ShiftN(int n);
 };
 
 #endif
