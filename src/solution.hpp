@@ -6,16 +6,15 @@
 
 class Solution
 {
-private:
-    std::vector<Table> tables;
-
 public:
     Solution(Data data);
-    double Value(const std::vector<std::vector<double>> &adj_matrix);
-    void Randomize();
-    void Disturb(int n);
+    Solution(std::vector<Table> tables);
+    void Disturb();
+    void Show();
     void TwoOpt();
-    void ShiftN(int n);
+    void ShiftN();
+    double Value(const std::vector<std::vector<double>> &adj_matrix);
+    std::vector<Table> tables;
 };
 
 #endif

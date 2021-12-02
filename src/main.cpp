@@ -7,21 +7,44 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    if (argc > 1)
+    if (argc > 2)
     {
         string file = argv[1];
         string filepath = "instancias/" + file;
         cout << "Initializing..." << endl;
         Data data(filepath);
 
-        Solution solution(data);
-        cout << "Done!" << endl;
+        Solution s1(data);
+        int count = 0;
+        int max_iterations = atoi(argv[2]);
 
-        cout << "Solution value: " << solution.Value(data.adj_matrix) << endl;
+        double solutionValue = s1.Value(data.adj_matrix);
 
-        if (argc >= 3 && string(argv[2]) == "-p")
-            data.Show();
+        cout << endl << "First solution value: " << solutionValue << endl << endl;
+
+        Solution s2(s1.tables);
+
+        cout << "Starting " << max_iterations << " iterations..." << endl << endl;
         
+        while(count < max_iterations)
+        {
+            double sol2 = s2.Value(data.adj_matrix);
+            if(sol2 >= solutionValue)
+            {
+                solutionValue = sol2;
+                s1 = s2;
+            }
+            s2.Disturb();
+            
+            ++count;
+        }
+
+        cout << "Final solution value: " << solutionValue << endl;
+
+
+        if (argc == 4 && string(argv[3]) == "-p")
+            data.Show();
+
     }
     else
         cout << "No file specified" << endl;
