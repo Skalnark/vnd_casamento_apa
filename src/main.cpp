@@ -1,5 +1,6 @@
 #include "data.hpp"
 #include "solution.hpp"
+#include "solver.hpp"
 #include <iostream>
 #include <string>
 
@@ -22,22 +23,15 @@ int main(int argc, char *argv[])
 
         cout << endl << "First solution value: " << solutionValue << endl << endl;
 
-        Solution s2(s1.tables);
-
         cout << "Starting " << max_iterations << " iterations..." << endl << endl;
         
         while(count < max_iterations)
         {
-            double sol2 = s2.Value(data.adj_matrix);
-            if(sol2 >= solutionValue)
-            {
-                solutionValue = sol2;
-                s1 = s2;
-            }
-            s2.Disturb();
-            
+            Solver::Swap1(s1, data.adj_matrix);
             ++count;
         }
+
+        solutionValue = s1.Value(data.adj_matrix);
 
         cout << "Final solution value: " << solutionValue << endl;
 

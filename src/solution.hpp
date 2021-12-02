@@ -8,13 +8,14 @@ class Solution
 {
 public:
     Solution(Data data);
-    Solution(std::vector<Table> tables);
+    Solution(const Solution &sol);
     void Disturb();
     void Show();
     void TwoOpt();
     void ShiftN();
     double Value(const std::vector<std::vector<double>> &adj_matrix);
     std::vector<Table> tables;
+    int Seats;
 };
 
 #endif

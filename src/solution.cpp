@@ -2,14 +2,16 @@
 #include <iostream>
 #include <random>
 
-Solution::Solution(std::vector<Table> tables)
+Solution::Solution(const Solution &sol)
 {
-    this->tables = tables;
+    this->Seats = sol.Seats;
+    this->tables = sol.tables;
 }
 
 Solution::Solution(Data data)
 {
     this->tables = data.tables;
+    this->Seats = data.Seats;
 
     int count = 0;
     int currentTable = 0;
