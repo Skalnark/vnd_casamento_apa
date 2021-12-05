@@ -8,40 +8,68 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    if (argc > 2)
+    if (argc > 3)
     {
         string file = argv[1];
         string filepath = "instancias/" + file;
-        cout << "Initializing..." << endl;
+        cout << "file: " << file << endl
+             << endl;
         Data data(filepath);
+        double bestSolution = 0;
+        double solutionValue = 0;
+        double average = 0;
+        vector<double> solutions;
 
         Solution s1(data);
         int count = 0;
         int max_iterations = atoi(argv[2]);
+        int alpha = atoi(argv[3]);
 
-        double solutionValue = s1.Value(data.adj_matrix);
-
-        cout << endl << "First solution value: " << solutionValue << endl << endl;
-
-        cout << "Starting " << max_iterations << " iterations..." << endl << endl;
-        
-        while(count < max_iterations)
+        for (int i = 0; i < 100; i++)
         {
-            Solver::Swap1(s1, data.adj_matrix);
-            ++count;
+            Solution::Disturb(100, s1);
+
+            if (i == 0)
+            {
+                solutionValue = s1.Value(data.adj_matrix);
+                bestSolution = solutionValue;
+                std::cout << "Initial Solution: " << std::endl;
+                s1.Show();
+                cout << endl
+                     << "First solution value: " << solutionValue << endl
+                     << endl;
+            }
+
+            Solver::VariableNeighborhoodDescent(s1, data.adj_matrix, max_iterations, 3, alpha);
+
+            solutionValue = s1.Value(data.adj_matrix);
+            solutions.push_back(solutionValue);
+            average += solutionValue;
+
+            if (solutionValue > bestSolution)
+            {
+                bestSolution = solutionValue;
+                //cout << "New best solution: " << solutionValue << endl
+                //     << endl;
+            }
         }
 
-        solutionValue = s1.Value(data.adj_matrix);
+        cout << "Final solution value: " << bestSolution << endl;
 
-        cout << "Final solution value: " << solutionValue << endl;
+        s1.Show();
 
+        /*cout << "Solutions: " << endl;
+        for (int i = 0; i < solutions.size(); ++i)
+        {
+            cout << solutions[i] << " ";
+            average += solutions[i];
+        }
+        std::cout << std::endl;*/
 
-        if (argc == 4 && string(argv[3]) == "-p")
-            data.Show();
-
+        cout << "Average solution: " << average / 100.0 << endl;
     }
     else
         cout << "No file specified" << endl;
-    
+
     return 0;
 }

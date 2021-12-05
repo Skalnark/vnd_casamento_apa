@@ -53,3 +53,13 @@ void Table::Show(int index)
     }
     std::cout << std::endl;
 }
+
+bool Table::CanGive()
+{
+    return guests.size() > minGuests;
+}
+
+bool Table::CanTake()
+{
+    return guests.size() < maxGuests;
+}

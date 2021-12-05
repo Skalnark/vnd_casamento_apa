@@ -17,6 +17,8 @@ public:
     bool IsValid();
     int SeatQuantity();
     void Show(int index);
+    bool CanGive();
+    bool CanTake();
 };
 
 #endif
