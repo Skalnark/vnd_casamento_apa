@@ -84,7 +84,6 @@ void Solution::Disturb(int n, Solution &sol)
         }
         else
         {
-
             Solver::Shift2(t1, t2, p1, p2, sol);
         }
     }
@@ -164,7 +163,7 @@ void Solution::Show()
     {
         tables[i].Show(i);
     }
-    std::cout << "-----------------------" << std::endl;
+    std::cout << "-----------------------" << std::endl << std::endl;
 }
 
 void Solution::TryShift1(Solution &sol)

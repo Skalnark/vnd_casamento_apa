@@ -137,23 +137,19 @@ void Solver::SearchShift2(Solution &sol, const std::vector<std::vector<double>> 
     {
         for (int t2 = 0; t2 < sol.tables.size(); ++t2)
         {
-            if (t1 != t2)
-                for (int i = 0; i < sol.tables[t1].guests.size(); ++i)
+            for (int i = 0; i < sol.tables[t1].guests.size(); ++i)
+            {
+                for (int j = 0; j < sol.tables[t2].guests.size(); ++j)
                 {
-                    for (int j = 0; j < sol.tables[t1].guests.size(); ++j)
-                    {
-                        if (i != j)
-                        {
-                            Solution s1(sol);
-                            Shift2(t1, t2, i, j, s1);
+                    Solution s1(sol);
+                    Shift2(t1, t2, i, j, s1);
 
-                            if (s1.Value(adj_matrix) > sol.Value(adj_matrix))
-                            {
-                                sol = s1;
-                            }
-                        }
+                    if (s1.Value(adj_matrix) > sol.Value(adj_matrix))
+                    {
+                        sol = s1;
                     }
                 }
+            }
         }
     }
 }

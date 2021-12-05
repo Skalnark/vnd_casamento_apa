@@ -9,18 +9,18 @@
 
 - n20c5_A
   - Otimo: 245
-  - Melhor resultado: 230
-  - Media: 226.45
+  - Melhor resultado: 244
+  - Media: 239.167
 
 - n20c5_B
   - Otimo: 180
-  - Melhor resultado: 173
-  - Media: 172.31
+  - Melhor resultado: 177
+  - Media: 173.133
 
 - n20c7_A
   - Otimo: 245
   - Melhor resultado: 242
-  - Media: 231.1
+  - Media: 224.467
 
 - n30c5_A
   - Otimo: 665

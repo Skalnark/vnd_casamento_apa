@@ -34,7 +34,7 @@ double Table::Evaluate(const std::vector<std::vector<double>> &adj_matrix)
     {
         for(int j = 0 ; j < guests.size() ; ++j)
         {
-            if(i != j)
+            if(i >= j)
             {
                 total += adj_matrix[guests[i]][guests[j]];
             }

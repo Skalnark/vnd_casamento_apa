@@ -17,15 +17,15 @@ int main(int argc, char *argv[])
         Data data(filepath);
         double bestSolution = 0;
         double solutionValue = 0;
+        double nSolutions = 100;
         double average = 0;
-        vector<double> solutions;
 
         Solution s1(data);
         int count = 0;
         int max_iterations = atoi(argv[2]);
         int alpha = atoi(argv[3]);
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < nSolutions; i++)
         {
             Solution::Disturb(100, s1);
 
@@ -33,43 +33,35 @@ int main(int argc, char *argv[])
             {
                 solutionValue = s1.Value(data.adj_matrix);
                 bestSolution = solutionValue;
+                cout << endl
+                     << "First solution value: " << solutionValue << endl;
                 std::cout << "Initial Solution: " << std::endl;
                 s1.Show();
-                cout << endl
-                     << "First solution value: " << solutionValue << endl
-                     << endl;
             }
 
             Solver::VariableNeighborhoodDescent(s1, data.adj_matrix, max_iterations, alpha);
 
             solutionValue = s1.Value(data.adj_matrix);
-            solutions.push_back(solutionValue);
             average += solutionValue;
 
             if (solutionValue > bestSolution)
             {
                 bestSolution = solutionValue;
-                //cout << "New best solution: " << solutionValue << endl
-                //     << endl;
+                // cout << "New best solution: " << solutionValue << endl
+                //      << endl;
             }
         }
 
-        cout << "Final solution value: " << bestSolution << endl;
-
+        cout << "Final solution: " << endl;
         s1.Show();
-
-        /*cout << "Solutions: " << endl;
-        for (int i = 0; i < solutions.size(); ++i)
-        {
-            cout << solutions[i] << " ";
-            average += solutions[i];
-        }
-        std::cout << std::endl;*/
-
-        cout << "Average solution: " << average / 100.0 << endl;
+        cout << "Final solution value: " << bestSolution << endl;
+        cout << "Average solution: " << average / nSolutions << endl;
     }
     else
-        cout << "No file specified" << endl;
+    {
+        cout << "Wrong number of parameters" << endl;
+        cout << "Usage: ./vnd <instance> <max_iterations> <alpha>" << endl;
+    }
 
     return 0;
 }
