@@ -1,15 +1,15 @@
 #include "solver.hpp"
 #include <iostream>
 
-void Solver::VariableNeighborhoodDescent(Solution &sol, const std::vector<std::vector<double>> &adj_matrix, int max_iter, int r, int a)
+void Solver::VariableNeighborhoodDescent(Solution &sol, const std::vector<std::vector<double>> &adj_matrix, int max_iter, int a)
 {
     int count = 0;
-    int k = 1;
+    int r = 4;
 
     Solution best_sol(sol);
     while (count <= max_iter)
     {
-        k = 1;
+        int k = 1;
         while (k <= r)
         {
             Solution current(best_sol);
@@ -18,13 +18,16 @@ void Solver::VariableNeighborhoodDescent(Solution &sol, const std::vector<std::v
             switch (k)
             {
             case 1:
-                SearchShift1(current, adj_matrix);
+                SearchSwap1(current, adj_matrix);
                 break;
             case 2:
-                SearchSwap2(current, adj_matrix);
+                SearchShift1(current, adj_matrix);
                 break;
             case 3:
-                SearchSwap1(current, adj_matrix);
+                SearchSwap2(current, adj_matrix);
+                break;
+            case 4:
+                SearchShift2(current, adj_matrix);
                 break;
             default:
                 break;
@@ -44,7 +47,7 @@ void Solver::VariableNeighborhoodDescent(Solution &sol, const std::vector<std::v
         count++;
     }
 
-    if(best_sol.Value(adj_matrix) > sol.Value(adj_matrix))
+    if (best_sol.Value(adj_matrix) > sol.Value(adj_matrix))
     {
         sol = best_sol;
     }
@@ -121,10 +124,36 @@ void Solver::SearchShift1(Solution &sol, const std::vector<std::vector<double>> 
 
                         if (s1.Value(adj_matrix) > sol.Value(adj_matrix))
                         {
-                            // std::cout << "best solution: " << sol.Value(adj_matrix) << " to " << s1.Value(adj_matrix) << std::endl;
                             sol = s1;
                         }
                     }
+        }
+    }
+}
+
+void Solver::SearchShift2(Solution &sol, const std::vector<std::vector<double>> &adj_matrix)
+{
+    for (int t1 = 0; t1 < sol.tables.size() - 1; ++t1)
+    {
+        for (int t2 = 0; t2 < sol.tables.size(); ++t2)
+        {
+            if (t1 != t2)
+                for (int i = 0; i < sol.tables[t1].guests.size(); ++i)
+                {
+                    for (int j = 0; j < sol.tables[t1].guests.size(); ++j)
+                    {
+                        if (i != j)
+                        {
+                            Solution s1(sol);
+                            Shift2(t1, t2, i, j, s1);
+
+                            if (s1.Value(adj_matrix) > sol.Value(adj_matrix))
+                            {
+                                sol = s1;
+                            }
+                        }
+                    }
+                }
         }
     }
 }
@@ -155,5 +184,36 @@ void Solver::Shift1(int t1, int t2, int i, Solution &sol)
     if (sol.tables[t1].CanGive() && sol.tables[t2].AddGuest(guest))
     {
         sol.tables[t1].guests.erase(sol.tables[t1].guests.begin() + i);
+    }
+}
+
+void Solver::Shift2(int t1, int t2, int i, int j, Solution &sol)
+{
+    if (i > sol.tables[t1].guests.size() - 1)
+        return;
+
+    double guest1 = sol.tables[t1].guests[i];
+    bool changed = false;
+
+    if (sol.tables[t1].CanGive() && sol.tables[t2].CanTake())
+    {
+        if (sol.tables[t2].AddGuest(guest1))
+        {
+            changed = true;
+            sol.tables[t1].guests.erase(sol.tables[t1].guests.begin() + i);
+        }
+    }
+
+    if (j > sol.tables[t1].guests.size() - 1)
+        return;
+
+    double guest2 = sol.tables[t1].guests[j];
+    if (sol.tables[t1].CanGive() && sol.tables[t2].CanTake())
+    {
+        if (sol.tables[t2].AddGuest(guest2))
+        {
+            changed = true;
+            sol.tables[t1].guests.erase(sol.tables[t1].guests.begin() + j);
+        }
     }
 }

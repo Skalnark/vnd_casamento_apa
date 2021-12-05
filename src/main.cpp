@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
                      << endl;
             }
 
-            Solver::VariableNeighborhoodDescent(s1, data.adj_matrix, max_iterations, 3, alpha);
+            Solver::VariableNeighborhoodDescent(s1, data.adj_matrix, max_iterations, alpha);
 
             solutionValue = s1.Value(data.adj_matrix);
             solutions.push_back(solutionValue);

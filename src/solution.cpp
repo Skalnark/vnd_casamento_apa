@@ -75,9 +75,18 @@ void Solution::Disturb(int n, Solution &sol)
         int p1 = distT1(rng);
         int p2 = distT2(rng);
 
-        int swap = sol.tables[t1].guests[p1];
-        sol.tables[t1].guests[p1] = sol.tables[t2].guests[p2];
-        sol.tables[t2].guests[p2] = swap;
+        std::uniform_int_distribution<std::mt19937::result_type> coin(0, 1);
+        if (coin(rng) > 0)
+        {
+            int swap = sol.tables[t1].guests[p1];
+            sol.tables[t1].guests[p1] = sol.tables[t2].guests[p2];
+            sol.tables[t2].guests[p2] = swap;
+        }
+        else
+        {
+
+            Solver::Shift2(t1, t2, p1, p2, sol);
+        }
     }
 }
 
