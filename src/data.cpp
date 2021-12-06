@@ -27,6 +27,13 @@ Data::Data(std::string filepath)
 
     std::cout << "nGuests: " << nGuests << " "
               << "nTables: " << nTables << std::endl;
+    
+    guests = std::vector<int>();
+
+    for(int i = 0; i < nGuests; ++i)
+    {
+        guests.push_back(i);
+    }
 
     while (!(tables_parsed && benefits_parsed))
     {
@@ -72,6 +79,7 @@ Data::Data(std::string filepath)
                 file >> benefit;
 
                 adj_matrix[guest][other_guest] = benefit;
+                adj_matrix[other_guest][guest] = benefit;
             }
         }
     }

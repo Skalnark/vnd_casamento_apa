@@ -1,7 +1,8 @@
 #include "solution.hpp"
+#include "solver.hpp"
 #include <iostream>
 #include <random>
-#include "solver.hpp"
+#include <limits>
 
 Solution::Solution(const Solution &sol)
 {
@@ -14,29 +15,88 @@ Solution::Solution(Data data)
     this->tables = data.tables;
     this->Seats = data.Seats;
 
-    int count = 0;
     int currentTable = 0;
 
     int guestsPerTable = data.nGuests / data.nTables;
 
-    while (count < data.Seats && currentTable < data.nTables)
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> guestRng(0, data.nGuests - 1);
+
+    int guest = guestRng(rng);
+    tables[0].AddGuest(guest);
+    data.guests.erase(data.guests.begin() + guest);
+
+    while (currentTable < data.nTables)
     {
-        if (tables[currentTable].guests.size() < guestsPerTable && tables[currentTable].AddGuest(count))
+        if (tables[currentTable].guests.size() < guestsPerTable)
         {
-            ++count;
+            double max = std::numeric_limits<double>::lowest();
+            int bestGuest = 0;
+            for (int i = 0; i < data.guests.size() - 1; ++i)
+            {
+                if (i != guest)
+                {
+                    if (max < data.adj_matrix[guest][data.guests[i]])
+                    {
+                        max = data.adj_matrix[guest][data.guests[i]];
+                        bestGuest = i;
+                    }
+                }
+            }
+
+            if (tables[currentTable].AddGuest(data.guests[bestGuest]))
+            {
+                data.guests.erase(data.guests.begin() + bestGuest);
+
+                if (data.guests.size() == 0)
+                {
+                    break;
+                }
+
+                guest = tables[currentTable].guests.back();
+            }
+            else
+            {
+                ++currentTable;
+            }
         }
         else
         {
             ++currentTable;
+            guestRng = std::uniform_int_distribution<std::mt19937::result_type>(0, data.guests.size() - 1);
+            guest = guestRng(rng);
+            tables[currentTable].AddGuest(data.guests[guest]);
+            data.guests.erase(data.guests.begin() + guest);
         }
     }
 
     currentTable = 0;
-    while (count < data.nGuests)
+    while (data.guests.size() > 0)
     {
-        if (tables[currentTable].AddGuest(count))
+        if (tables[currentTable].CanTake())
         {
-            ++count;
+            guest = tables[currentTable].guests.back();
+
+            double max = std::numeric_limits<double>::lowest();
+            int bestGuest = 0;
+            for (int i = 0; i < data.guests.size(); ++i)
+            {
+                if (guest != i)
+                {
+                    if (max < data.adj_matrix[guest][data.guests[i]])
+                    {
+                        max = data.adj_matrix[guest][data.guests[i]];
+                        bestGuest = i;
+                    }
+                }
+            }
+
+            tables[currentTable].AddGuest(data.guests[bestGuest]);
+
+            data.guests.erase(data.guests.begin() + bestGuest);
+
+            guest = tables[currentTable].guests.back();
         }
         else
         {
@@ -163,7 +223,8 @@ void Solution::Show()
     {
         tables[i].Show(i);
     }
-    std::cout << "-----------------------" << std::endl << std::endl;
+    std::cout << "-----------------------" << std::endl
+              << std::endl;
 }
 
 void Solution::TryShift1(Solution &sol)

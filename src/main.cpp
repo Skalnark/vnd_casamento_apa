@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    if (argc > 3)
+    if (argc > 4)
     {
         string file = argv[1];
         string filepath = "instancias/" + file;
@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
         Data data(filepath);
         double bestSolution = 0;
         double solutionValue = 0;
+        double greed = 0;
         double nSolutions = 100;
         double average = 0;
 
@@ -24,10 +25,10 @@ int main(int argc, char *argv[])
         int count = 0;
         int max_iterations = atoi(argv[2]);
         int alpha = atoi(argv[3]);
+        int optimal = atoi(argv[4]);
 
         for (int i = 0; i < nSolutions; i++)
         {
-            Solution::Disturb(100, s1);
 
             if (i == 0)
             {
@@ -38,6 +39,10 @@ int main(int argc, char *argv[])
                 std::cout << "Initial Solution: " << std::endl;
                 s1.Show();
             }
+            // if (i < 10)
+            Solution::Disturb(100, s1);
+            // else
+            //     s1 = Solution(data);
 
             Solver::VariableNeighborhoodDescent(s1, data.adj_matrix, max_iterations, alpha);
 
@@ -47,15 +52,16 @@ int main(int argc, char *argv[])
             if (solutionValue > bestSolution)
             {
                 bestSolution = solutionValue;
-                // cout << "New best solution: " << solutionValue << endl
-                //      << endl;
             }
         }
 
         cout << "Final solution: " << endl;
         s1.Show();
+        average = average / nSolutions;
         cout << "Final solution value: " << bestSolution << endl;
-        cout << "Average solution: " << average / nSolutions << endl;
+        cout << "Average solution: " << average << endl;
+        cout << "Best greed solution: " << greed << endl;
+        cout << "Gap : " << ((optimal - bestSolution) / optimal) * 100 << endl;
     }
     else
     {

@@ -14,6 +14,7 @@ class Data
         void Show();
         std::vector<Table> tables;
         std::vector<std::vector<double>> adj_matrix;
+        std::vector<int> guests;
         int Seats;
 };
 
