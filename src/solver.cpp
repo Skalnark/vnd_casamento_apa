@@ -6,14 +6,12 @@ void Solver::VariableNeighborhoodDescent(Solution &sol, const std::vector<std::v
     int count = 0;
     int r = 4;
 
-    Solution best_sol(sol);
     while (count <= max_iter)
     {
         int k = 1;
         while (k <= r)
         {
-            Solution current(best_sol);
-            Solution::Disturb(a, current);
+            Solution current = Solution(a, sol);
 
             switch (k)
             {
@@ -33,9 +31,9 @@ void Solver::VariableNeighborhoodDescent(Solution &sol, const std::vector<std::v
                 break;
             }
 
-            if (current.Value(adj_matrix) > best_sol.Value(adj_matrix))
+            if (current.Value(adj_matrix) > sol.Value(adj_matrix))
             {
-                best_sol = current;
+                sol = current;
                 k = 1;
                 count = 0;
             }
@@ -45,11 +43,6 @@ void Solver::VariableNeighborhoodDescent(Solution &sol, const std::vector<std::v
             }
         }
         count++;
-    }
-
-    if (best_sol.Value(adj_matrix) > sol.Value(adj_matrix))
-    {
-        sol = best_sol;
     }
 }
 
@@ -67,10 +60,6 @@ void Solver::SearchSwap1(Solution &sol, const std::vector<std::vector<double>> &
 
                 if (s1.Value(adj_matrix) > sol.Value(adj_matrix))
                 {
-                    // std::cout << "Swapping " << i << " and " << j << " from tables " << k << " and " << k + 1 << std::endl;
-                    // s1.Show();
-                    // std::cout << "New best. From  " << sol.Value(adj_matrix) << " to " << s1.Value(adj_matrix) << std::endl;
-
                     sol = s1;
                 }
             }

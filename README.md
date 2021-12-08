@@ -8,35 +8,49 @@
 
 - n20c5_A
   - Otimo: 245
-  - Melhor resultado: 244
-  - Media: 239.167
+  - Melhor VND: 244
+  - Media VND: 239.167
+  - Melhor Greed: 107
+  - Media Greed: 3.12
 
 - n20c5_B
   - Otimo: 180
-  - Melhor resultado: 177
-  - Media: 173.133
+  - Melhor VND: 177
+  - Media VND: 173.133
+  - Melhor Greed: 71
+  - Media Greed: -10
 
 - n20c7_A
   - Otimo: 245
-  - Melhor resultado: 242
-  - Media: 224.467
+  - Melhor VND: 242
+  - Media VND: 224.467
+  - Melhor Greed: 96
+  - Media Greed: 5.861
 
 - n30c5_A
   - Otimo: 665
-  - Melhor resultado: 597
-  - Media: 569
+  - Melhor VND: 597
+  - Media VND: 569
+  - Melhor Greed: 94
+  - Media Greed: 1.578
 
 - n30c5_B
   - Otimo: 386
-  - Melhor resultado: 346
-  - Media: 336.7
+  - Melhor VND: 346
+  - Media VND: 336.7
+  - Melhor Greed: 53
+  - Media Greed: -21
 
 - n50c8_A
   - Otimo: ???
-  - Melhor resultado: 1098
-  - Media: 1054.1
+  - Melhor VND: 1098
+  - Media VND: 1054.1
+  - Melhor Greed: 187
+  - Media Greed: -9.995
 
 - n50c8_B
   - Otimo: ???
-  - Melhor resultado: 818
-  - Media: 782.86
+  - Melhor VND: 818
+  - Media VND: 782.86
+  - Melhor Greed: 153
+  - Media Greed: 10.662

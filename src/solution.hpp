@@ -9,10 +9,12 @@ class Solution
 private:
     static void TryShift1(Solution &sol);
 public:
-    Solution(Data data);
+    Solution();
     Solution(const Solution &sol);
+    Solution(int n, const Solution &sol);
+    Solution(const Data &dt);
+    static void Greed(const Data &dt);
     static void RandomNeighbor(Solution &sol, const int k);
-    static void Disturb(int n, Solution &sol);
     void Show();
     void TwoOpt();
     void ShiftN();

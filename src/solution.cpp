@@ -9,6 +9,13 @@ Solution::Solution(const Solution &sol)
     this->tables = sol.tables;
 }
 
+Solution::Solution()
+{
+    this->Seats = 0;
+    this->tables = std::vector<Table>();
+}
+
+/*
 Solution::Solution(Data data)
 {
     this->tables = data.tables;
@@ -44,7 +51,7 @@ Solution::Solution(Data data)
         }
     }
 }
-
+*/
 double Solution::Value(const std::vector<std::vector<double>> &adj_matrix)
 {
     double total = 0;
@@ -60,31 +67,117 @@ double Solution::Value(const std::vector<std::vector<double>> &adj_matrix)
     return total;
 }
 
-void Solution::Disturb(int n, Solution &sol)
+Solution::Solution(int n, const Solution &sol)
+    : Solution(sol)
 {
+
     for (int i = 0; i < n; ++i)
     {
         std::random_device dev;
         std::mt19937 rng(dev());
-        std::uniform_int_distribution<std::mt19937::result_type> dist(0, sol.tables.size() - 1);
-
-        int t2 = dist(rng);
+        std::uniform_int_distribution<std::mt19937::result_type> dist(0, tables.size() - 1);
         int t1 = dist(rng);
-        std::uniform_int_distribution<std::mt19937::result_type> distT1(0, sol.tables[t1].guests.size() - 1);
-        std::uniform_int_distribution<std::mt19937::result_type> distT2(0, sol.tables[t2].guests.size() - 1);
+        int t2 = dist(rng);
+
+        std::uniform_int_distribution<std::mt19937::result_type> distT1(0, tables[t1].guests.size() - 1);
+        std::uniform_int_distribution<std::mt19937::result_type> distT2(0, tables[t2].guests.size() - 1);
         int p1 = distT1(rng);
         int p2 = distT2(rng);
 
         std::uniform_int_distribution<std::mt19937::result_type> coin(0, 1);
+
         if (coin(rng) > 0)
         {
-            int swap = sol.tables[t1].guests[p1];
-            sol.tables[t1].guests[p1] = sol.tables[t2].guests[p2];
-            sol.tables[t2].guests[p2] = swap;
+            int swap = tables[t1].guests[p1];
+            tables[t1].guests[p1] = tables[t2].guests[p2];
+            tables[t2].guests[p2] = swap;
         }
         else
         {
-            Solver::Shift2(t1, t2, p1, p2, sol);
+            Solver::Shift2(t1, t2, p1, p2, *this);
+        }
+    }
+}
+
+Solution::Solution(const Data &dt)
+{
+    Data data = dt;
+
+    this->Seats = data.Seats;
+    this->tables = data.tables;
+
+    int currentTable = 0;
+    int guestsPerTable = data.nGuests / data.nTables;
+
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> guestRng(0, data.nGuests - 1);
+    std::uniform_int_distribution<std::mt19937::result_type> coin(0, 10);
+
+    int index = guestRng(rng);
+    tables[0].AddGuest(data.guests[index]);
+    data.guests.erase(data.guests.begin() + index);
+
+    while (currentTable < data.nTables)
+    {
+        if (tables[currentTable].guests.size() < guestsPerTable && tables[currentTable].CanTake())
+        {
+            double max = std::numeric_limits<double>::lowest();
+            int bestGuest = 0;
+            for (int i = 0; i < data.guests.size() - 1; ++i)
+            {
+                Table t1 = tables[currentTable];
+
+                if (!t1.AddGuest(data.guests[i]))
+                    break;
+
+                if (max < t1.Evaluate(data.adj_matrix))
+                {
+                    max = t1.Evaluate(data.adj_matrix);
+                    bestGuest = i;
+                }
+            }
+
+            tables[currentTable].AddGuest(data.guests[bestGuest]);
+            data.guests.erase(data.guests.begin() + bestGuest);
+
+            if (data.guests.size() == 0)
+            {
+                break;
+            }
+        }
+        else{
+            ++currentTable;
+        }
+    }
+
+    currentTable = 0;
+    while (data.guests.size() > 0)
+    {
+        if (tables[currentTable].CanTake())
+        {
+            double max = std::numeric_limits<double>::lowest();
+            int bestGuest = 0;
+            for (int i = 0; i < data.guests.size(); ++i)
+            {
+                Table t1 = tables[currentTable];
+
+                t1.AddGuest(data.guests[i]);
+
+                if (max < t1.Evaluate(data.adj_matrix))
+                {
+                    max = t1.Evaluate(data.adj_matrix);
+                    bestGuest = i;
+                }
+            }
+
+            tables[currentTable].AddGuest(data.guests[bestGuest]);
+
+            data.guests.erase(data.guests.begin() + bestGuest);
+        }
+        else
+        {
+            ++currentTable;
         }
     }
 }
@@ -163,7 +256,8 @@ void Solution::Show()
     {
         tables[i].Show(i);
     }
-    std::cout << "-----------------------" << std::endl << std::endl;
+    std::cout << "-----------------------" << std::endl
+              << std::endl;
 }
 
 void Solution::TryShift1(Solution &sol)

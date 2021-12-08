@@ -13,7 +13,7 @@ Data::Data(std::string filepath)
 
     if (!file)
     {
-        std::cout << "Error: File not parsed!" << std::endl;
+        std::cout << "Error: File not found!" << std::endl;
         exit(-1);
     }
 
@@ -27,6 +27,12 @@ Data::Data(std::string filepath)
 
     std::cout << "nGuests: " << nGuests << " "
               << "nTables: " << nTables << std::endl;
+
+    guests = std::vector<int>();
+    for (int i = 0; i < nGuests; ++i)
+    {
+        guests.push_back(i);
+    }
 
     while (!(tables_parsed && benefits_parsed))
     {
@@ -71,6 +77,7 @@ Data::Data(std::string filepath)
                 file >> other_guest;
                 file >> benefit;
 
+                adj_matrix[guest][other_guest] = benefit;
                 adj_matrix[guest][other_guest] = benefit;
             }
         }
