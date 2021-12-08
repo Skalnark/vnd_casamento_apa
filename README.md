@@ -2,7 +2,7 @@
 
 - Make deve compilar
 - Make clear vai limpar os arquivos obj
-- ./vnd nome_da_instancia.txt qtd_iterações coeficiente_de_perturbação 
+- ./vnd <nome_da_instancia> <qtd_iterações> <coeficiente_de_perturbação> <ótimo>
 
 ## Optimal solution for some instances
 
