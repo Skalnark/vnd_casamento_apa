@@ -78,7 +78,7 @@ Data::Data(std::string filepath)
                 file >> benefit;
 
                 adj_matrix[guest][other_guest] = benefit;
-                adj_matrix[guest][other_guest] = benefit;
+                adj_matrix[other_guest][guest] = benefit;
             }
         }
     }

@@ -1,0 +1,31 @@
+file: n20c5_B.txt
+
+nGuests: 20 nTables: 5
+Greed final solution: 
+-----------------------
+Table 0: 1 4 0 8 
+Table 1: 2 18 11 9 
+Table 2: 3 16 13 14 
+Table 3: 5 6 10 15 
+Table 4: 7 12 17 19 
+-----------------------
+
+Best greed solution: 138
+Average greed solution: 120.88
+Greed gap : 23.3333
+Average Greed time: 0.156315 ms
+
+
+Vnd final solution: 
+-----------------------
+Table 0: 3 14 17 
+Table 1: 1 4 0 
+Table 2: 12 15 6 10 
+Table 3: 19 16 13 7 8 
+Table 4: 11 9 5 18 2 
+-----------------------
+
+Best VND solution: 173
+Average VND solution: 172.467
+VND gap : 3.88889
+Average VND time: 853.207 ms
